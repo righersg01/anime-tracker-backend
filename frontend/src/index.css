@@ -1,0 +1,135 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
+
+@layer base {
+  :root {
+    --background: 240 10% 6%;
+    --foreground: 0 0% 95%;
+
+    --card: 240 10% 10%;
+    --card-foreground: 0 0% 95%;
+
+    --popover: 240 10% 10%;
+    --popover-foreground: 0 0% 95%;
+
+    --primary: 330 85% 60%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 240 10% 16%;
+    --secondary-foreground: 0 0% 95%;
+
+    --muted: 240 10% 20%;
+    --muted-foreground: 240 5% 55%;
+
+    --accent: 270 80% 65%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 240 10% 18%;
+    --input: 240 10% 18%;
+    --ring: 330 85% 60%;
+
+    --radius: 0.75rem;
+
+    --star-filled: 45 100% 55%;
+    --star-empty: 240 10% 25%;
+
+    --tag-comedy: 45 100% 50%;
+    --tag-romance: 330 85% 60%;
+    --tag-action: 0 85% 55%;
+    --tag-fantasy: 270 80% 65%;
+    --tag-drama: 200 80% 50%;
+    --tag-horror: 0 0% 30%;
+    --tag-scifi: 180 70% 45%;
+    --tag-slice: 120 60% 45%;
+
+    --sidebar-background: 240 10% 8%;
+    --sidebar-foreground: 0 0% 95%;
+    --sidebar-primary: 330 85% 60%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 10% 16%;
+    --sidebar-accent-foreground: 0 0% 95%;
+    --sidebar-border: 240 10% 18%;
+    --sidebar-ring: 330 85% 60%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-outfit antialiased;
+  }
+}
+
+@layer utilities {
+  .anime-card {
+    @apply relative overflow-hidden rounded-xl bg-card border border-border transition-all duration-300;
+  }
+
+  .anime-card:hover {
+    @apply border-primary/50 shadow-lg shadow-primary/10 -translate-y-1;
+  }
+
+  .anime-card-image {
+    @apply aspect-[3/4] w-full object-cover;
+  }
+
+  .star-rating {
+    @apply flex gap-1;
+  }
+
+  .tag-pill {
+    @apply px-2 py-0.5 rounded-full text-xs font-medium;
+  }
+
+  .gradient-text {
+    @apply bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent;
+  }
+
+  .glass-effect {
+    @apply bg-card/80 backdrop-blur-md;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+.animate-shimmer {
+  background: linear-gradient(
+    90deg,
+    hsl(var(--muted)) 0%,
+    hsl(var(--secondary)) 50%,
+    hsl(var(--muted)) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}

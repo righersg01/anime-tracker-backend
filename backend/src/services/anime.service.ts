@@ -1,18 +1,17 @@
 import prisma from "../lib/prisma";
+import { CreateAnimeDTO } from "../schemas/anime.schema";
 
 export class AnimeService {
-  async create(
-    userId: string,
-    data: {
-      title: string;
-      episodes: number;
-      rating?: number;
-    },
-  ) {
+  async create(userId: string, data: CreateAnimeDTO) {
     return prisma.anime.create({
       data: {
-        ...data,
         userId,
+        title: data.title,
+        episodes: data.episodes,
+        rating: data.rating,
+        coverImage: data.coverImage ?? null,
+        watchedDate: data.watchedDate ? new Date(data.watchedDate) : null,
+        genres: data.genres ?? [],
       },
     });
   }
@@ -52,9 +51,15 @@ export class AnimeService {
 
   async listByUserPaginated(
     userId: string,
-    opts: { page: number; limit: number; sort: string; order: string },
+    opts: {
+      page: number;
+      limit: number;
+      sort: string;
+      order: string;
+      search: string;
+    },
   ) {
-    const { page, limit, sort, order } = opts;
+    const { page, limit, sort, order, search } = opts;
 
     const allowedSortFields = ["createdAt", "rating", "title"] as const;
 
@@ -63,12 +68,21 @@ export class AnimeService {
       : "createdAt";
 
     const sortOrder = order === "asc" ? "asc" : "desc";
+    const where = search
+      ? {
+          userId,
+          title: {
+            contains: search,
+            mode: "insensitive" as const,
+          },
+        }
+      : { userId };
 
     const skip = (page - 1) * limit;
 
     const [items, total] = await Promise.all([
       prisma.anime.findMany({
-        where: { userId },
+        where,
         orderBy: { [sortField]: sortOrder },
         skip,
         take: limit,
@@ -85,7 +99,7 @@ export class AnimeService {
         },
       }),
       prisma.anime.count({
-        where: { userId },
+        where,
       }),
     ]);
 

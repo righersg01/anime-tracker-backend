@@ -42,12 +42,14 @@ export class AnimeController {
 
     const sort = String(req.query.sort || "createdAt");
     const order = String(req.query.order || "desc");
+    const search = String(req.query.search || "");
 
     const result = await animeService.listByUserPaginated(req.userId, {
       page,
       limit,
       sort,
       order,
+      search,
     });
 
     return res.json(result);
